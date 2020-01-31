@@ -3,8 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const db = require('./db/index');
-
-
+const topicRoutes = require('./routes/topicRoutes');
 
 const config = {
     name: 'mailgenerator-express',
@@ -17,8 +16,17 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use('/topic', topicRoutes);
+
 app.get('/', (req, res) => {
-    res.status(200).send('heheheheh world');
+    db.create('topic', {
+        name: 'Kilta',
+        number: 1
+    }, (instance) => {
+        console.log("added instance:", instance);
+        res.status(200).send(instance);
+    });
+
 });
 
 app.listen(config.port, config.host, (e)=> {
