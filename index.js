@@ -4,6 +4,8 @@ const cors = require('cors');
 
 const db = require('./db/index');
 const topicRoutes = require('./routes/topicRoutes');
+const subtopicRoutes = require('./routes/subtopicRoutes');
+
 
 const config = {
     name: 'mailgenerator-express',
@@ -17,16 +19,11 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/topic', topicRoutes);
+app.use('/subtopic', subtopicRoutes);
+
 
 app.get('/', (req, res) => {
-    db.create('topic', {
-        name: 'Kilta',
-        number: 1
-    }, (instance) => {
-        console.log("added instance:", instance);
-        res.status(200).send(instance);
-    });
-
+    res.status(200).send("OK");
 });
 
 app.listen(config.port, config.host, (e)=> {
