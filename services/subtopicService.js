@@ -27,7 +27,7 @@ const getAllSubtopics = async (topicName) => {
     }
 
     const tidied = all.map(subtopic => {
-        return removeProperty(subtopic, "__v");//removeProperty(, "_id");
+        return all;//removeProperty(subtopic, "__v");//removeProperty(, "_id");
     });
 
     console.log(tidied);
