@@ -26,7 +26,19 @@ const addTopic = async (topicData) => {
     return ret;
 };
 
+const deleteTopic = async (number) => {
+    const conn = await db.connect();
+    const topics = await topicModel.find({number: number});
+    for (let topic in topics) {
+        await topic.remove();
+    }
+    conn.close();
+
+    return topics;
+};
+
 module.exports = {
     getAllTopics,
-    addTopic
+    addTopic,
+    deleteTopic
 };

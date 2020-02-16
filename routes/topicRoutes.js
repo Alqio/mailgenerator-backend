@@ -18,6 +18,15 @@ router.post('/', async (req, res) => {
     res.send(topic);
 });
 
+router.delete('/:number', async (req, res) => {
+    const number = req.params.number;
+
+    const topics = await topicService.deleteTopic(number);
+
+    res.send(topics);
+
+});
+
 // define the about route
 router.get('/about', function (req, res) {
     res.send('About birds')
