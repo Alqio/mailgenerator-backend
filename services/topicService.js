@@ -28,10 +28,11 @@ const addTopic = async (topicData) => {
 
 const deleteTopic = async (number) => {
     const conn = await db.connect();
+
     const topics = await topicModel.find({number: number});
-    for (let topic in topics) {
-        await topic.remove();
-    }
+
+    await topicModel.deleteMany({number: number});
+
     conn.close();
 
     return topics;

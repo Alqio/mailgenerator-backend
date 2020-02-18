@@ -27,9 +27,5 @@ router.delete('/:number', async (req, res) => {
 
 });
 
-// define the about route
-router.get('/about', function (req, res) {
-    res.send('About birds')
-});
 
 module.exports = router;
