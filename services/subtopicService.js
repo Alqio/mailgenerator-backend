@@ -49,5 +49,6 @@ const addSubtopic = async (subtopicData) => {
 
 module.exports = {
     getAllSubtopics,
-    addSubtopic
+    addSubtopic,
+    subtopicModel
 };

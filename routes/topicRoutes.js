@@ -14,7 +14,9 @@ router.post('/', async (req, res) => {
     const body = req.body;
     const topicData = {name: body.name, number: body.number};
     const topic = await topicService.addTopic(topicData);
-
+    if (topic.error) {
+        res.status(409).send(topic);
+    }
     res.send(topic);
 });
 

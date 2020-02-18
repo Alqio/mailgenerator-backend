@@ -1,6 +1,7 @@
 const schemas = require('../db/schemas');
 const mongoose = require('mongoose');
 const db = require('../db/index');
+const subtopicService = require('subtopicService');
 
 const topicModel = mongoose.model('topic', schemas['topic']);
 
@@ -17,6 +18,19 @@ const getAllTopics = async () => {
 };
 
 const addTopic = async (topicData) => {
+    const number = topicData.number;
+    const topics = await getAllTopics();
+
+    for (let i = 0; i < topics.length; i++) {
+        console.log(topics[i]);
+        if (topics[i].number === number) {
+            return {
+                error: "Number already exists",
+                code: 409
+            };
+        }
+    }
+
     const topic = new topicModel(topicData);
 
     const conn = await db.connect();
@@ -30,6 +44,10 @@ const deleteTopic = async (number) => {
     const conn = await db.connect();
 
     const topics = await topicModel.find({number: number});
+
+    for (let i = 0; i < topics.length; i++) {
+        await subtopicService.subtopicModel.deleteMany({topic: topics[i].name})
+    }
 
     await topicModel.deleteMany({number: number});
 

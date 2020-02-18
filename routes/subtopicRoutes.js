@@ -7,9 +7,8 @@ const router = express.Router();
 // define the home page route
 router.get('/', async (req, res) => {
     const body = req.body;
-    console.log("body: ", body);
+
     const topicName = (body["topic"] ? body["topic"] : "");
-    console.log("here");
     const subtopics = await subtopicService.getAllSubtopics(topicName);
     res.send(subtopics);
 });
