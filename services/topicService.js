@@ -18,7 +18,7 @@ const getAllTopics = async () => {
 };
 
 const addTopic = async (topicData) => {
-    const number = topicData.number;
+    const number = Number(topicData.number);
     const name = topicData.name;
     const topics = await getAllTopics();
 
@@ -28,7 +28,8 @@ const addTopic = async (topicData) => {
                 error: "Number already exists",
                 code: 409
             };
-        } else if (topics[i] === name) {
+        }
+        if (topics[i].name === name) {
             return {
                 error: "Name already exists",
                 code: 409

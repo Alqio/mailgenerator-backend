@@ -39,6 +39,7 @@ const getAllSubtopics = async (topicName) => {
 
 const addSubtopic = async (subtopicData) => {
     const subtopic = new subtopicModel(subtopicData);
+    console.log("here, subtopicData:", subtopicData);
 
     const conn = await db.connect();
     const ret = await subtopic.save();

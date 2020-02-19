@@ -9,7 +9,7 @@ const topic = new mongoose.Schema({
     number: {
         type: Number,
         required: [true, "Topic needs a number"]
-    }
+    },
 });
 
 const subtopic = new mongoose.Schema({
@@ -22,7 +22,7 @@ const subtopic = new mongoose.Schema({
         required: false
     },
     date: {
-        type: Number,
+        type: String,
         required: false
     },
     url: {
@@ -38,11 +38,11 @@ const subtopic = new mongoose.Schema({
         required: true
     },
     registrationStart: {
-        type: Number,
+        type: String,
         required: false
     },
     registrationEnd: {
-        type: Number,
+        type: String,
         required: false
     },
     topic: {
