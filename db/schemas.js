@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const moment = require('moment');
 
+const mail = new mongoose.Schema({
+    name: {
+        type: String,
+        required: [true, "Mail needs a name"]
+    }
+});
+
 const topic = new mongoose.Schema({
     name: {
       type: String,
@@ -54,6 +61,7 @@ const subtopic = new mongoose.Schema({
 
 
 module.exports = {
+    mail,
     topic,
     subtopic
 };
