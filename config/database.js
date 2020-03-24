@@ -1,5 +1,10 @@
-const port = process.env.DATABASE_PORT | 27017;
+const port = process.env.DATABASE_PORT | 27017;
+
 module.exports = {
     port,
-    url: "mongodb://mongo:" + port
+    url: "mongodb://mongo:" + port,
+    options: {
+        useUnifiedTopology: true,
+        useNewUrlParser: true
+    }
 };

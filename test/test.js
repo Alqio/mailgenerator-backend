@@ -17,8 +17,8 @@ describe("Mail", () => {
         return await helpers.clearDatabase();
     });
 
-    describe("GET /", () => {
-        it("should return empty list when there are no mails", async () => {
+    describe("Creating and getting mails should work", () => {
+        it("/GET should return empty list when there are no mails", async () => {
 
             const res = await chai.request(app).get('/mail');
 
@@ -27,10 +27,7 @@ describe("Mail", () => {
             expect(res.body.length).to.equal(0);
 
         });
-    });
-
-    describe("POST /", () => {
-        it("should create a new mail", async () => {
+        it("/POST should create a new mail", async () => {
             const mailData = {
                 ...helpers.mockMail
             };
@@ -40,10 +37,7 @@ describe("Mail", () => {
             res.should.have.status(200);
             res.body.should.be.a('object');
         });
-    });
-
-    describe("GET /", () => {
-        it("should get all mails", async () => {
+        it("/GET should get newly created mail", async () => {
 
             const res = await chai.request(app).get('/mail');
 
@@ -54,4 +48,8 @@ describe("Mail", () => {
 
         });
     });
+
+    after(async () => {
+        return await helpers.clearDatabase();
+    })
 });

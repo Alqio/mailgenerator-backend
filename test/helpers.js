@@ -8,13 +8,13 @@ const db = require('../db/index');
 
 const clearDatabase = async () => {
     const conn = await db.connect();
-    await mongoose.model('topic').remove({}, function(err) {
+    await mongoose.model('topic').deleteMany({}, function(err) {
         //console.log('Topic collection removed')
     });
-    await mongoose.model('mail').remove({}, function(err) {
+    await mongoose.model('mail').deleteMany({}, function(err) {
         //console.log('Mail collection removed')
     });
-    await mongoose.model('subtopic').remove({}, function(err) {
+    await mongoose.model('subtopic').deleteMany({}, function(err) {
         //console.log(' Subtopiccollection removed')
     });
     conn.close();
