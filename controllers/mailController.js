@@ -3,31 +3,27 @@ const mongoose = require('mongoose');
 const db = require('../db/index');
 const subtopicService = require('./subtopicService');
 
-const topicModel = mongoose.model('topic');
+const topicModel = mongoose.model('topic', schemas['topic']);
 const mailModel = mongoose.model('mail', schemas['mail']);
 
 
-const getMail = async (id) => {
+const getMails = async (req, res) => {
+    const id = req.params.id;
+
+    let mails;
+
     const conn = await db.connect();
-
-    const mail = await mailModel.find({id});
-
+    if (id) {
+        mails = await mailModel.find({id});
+    } else {
+        mails = await mailModel.find();
+    }
     conn.close();
 
-    return mail;
+    res.send(mails);
 };
 
-const getAllMails = async () => {
-    const conn = await db.connect();
-
-    const mails = await mailModel.find();
-
-    conn.close();
-
-    return mails;
-};
-
-const addMail = async (mailData) => {
+const addMail = async (req, res) => {
 
     const mail = new mailModel(mailData);
 
@@ -39,7 +35,6 @@ const addMail = async (mailData) => {
 };
 
 module.exports = {
-    getMail,
-    getAllMails,
+    getMails,
     addMail
 };

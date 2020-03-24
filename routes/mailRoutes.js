@@ -1,23 +1,13 @@
 const express = require('express');
 const db = require('../db/index');
 const mailService = require('../services/mailService');
+const mailController = require('../controllers/mailController');
 const topicService = require('../services/topicService');
 
 const router = express.Router();
 
 // define the home page route
-router.get('/:id', async (req, res) => {
-    const id = req.params.id;
-
-    let mails;
-    if (id) {
-        mails = await mailService.getMail();
-    } else {
-        mails = await mailService.getAllMails();
-    }
-
-    res.send(mails);
-});
+router.get('/:id', mailController.getMails);
 
 router.post('/', async (req, res) => {
     const body = req.body;

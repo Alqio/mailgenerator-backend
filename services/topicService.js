@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const db = require('../db/index');
 const subtopicService = require('./subtopicService');
 
-const topicModel = mongoose.model('topic', schemas['topic']);
+const topicModel = mongoose.model('topic');
 
 
 const getAllTopics = async () => {
