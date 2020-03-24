@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
-const Subtopic = mongoose.model('subtopic');
-const Mail = mongoose.model('mail');
+
+const Subtopic = require('./subtopic');
+const Mail = require('./mail');
+
+//const Subtopic = mongoose.model('subtopic');
+//const Mail = mongoose.model('mail');
 
 const topic = new mongoose.Schema({
     name: {

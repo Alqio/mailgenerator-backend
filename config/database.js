@@ -1,7 +1,5 @@
-db = {
-  url: "mongodb://mongo:27017"
-};
-
+const port = process.env.DATABASE_PORT | 27017;
 module.exports = {
-    ...db
+    port,
+    url: "mongodb://mongo:" + port
 };

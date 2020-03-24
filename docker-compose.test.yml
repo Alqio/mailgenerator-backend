@@ -1,0 +1,26 @@
+version: '3'
+services:
+  api:
+    image: mailgenerator-express
+    build: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./:/usr/src/app
+    depends_on:
+      - mongo
+    environment:
+      - DATABASE_PORT=27017
+    command: ["npm", "test"]
+
+  mongo:
+    image: mongo
+    # command: mongod --port 27018
+    ports:
+      - "27017:27017"
+    volumes:
+      - data-volume:/data/db
+    logging:
+      driver: "none"
+volumes:
+  data-volume:

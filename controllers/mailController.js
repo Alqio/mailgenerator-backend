@@ -7,11 +7,12 @@ const getMails = async (req, res) => {
     const id = req.params.mailId;
 
     const conn = await db.connect();
+
     let mails;
     if (id) {
-        mails = Mail.getMail(id);
+        mails = await Mail.getMail(id);
     } else {
-        mails = Mail.getAllMails();
+        mails = await Mail.getAllMails();
     }
     conn.close();
 

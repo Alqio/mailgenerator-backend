@@ -1,20 +1,16 @@
 const mongoose = require('mongoose');
 
-const Topic = mongoose.model('topic');
+const Topic = require('./topic');
 
 const mail = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Mail needs a name"]
-    },
-    id: {
-        type: String,
-        required: [true, "Mail needs an id"]
     }
 });
 
 mail.statics.getMail = async function(id) {
-    return await this.find({id});
+    return await this.findById(id);
 };
 
 mail.statics.getAllMails = async function() {
@@ -23,11 +19,9 @@ mail.statics.getAllMails = async function() {
 
 mail.statics.createMail = async function(mailData) {
     const name = mailData.name;
-    const id = mongoose.Types.ObjectId();
 
     const mail = new this({
-        name,
-        id
+        name
     });
 
     return await mail.save();
