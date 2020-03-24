@@ -1,12 +1,14 @@
-const schemas = require('../db/schemas');
 const mongoose = require('mongoose');
 const db = require('../db/index');
 
-const Topic = schemas.topic;
+const Topic = mongoose.model('topic');
 
-const getAllTopics = async (req, res) => {
+const getTopics = async (req, res) => {
+
+    const name = req.body.name;
+
     const conn = await db.connect();
-    const all = await Topic.getAllTopics();
+    const all = await Topic.getTopics(name);
     conn.close();
 
     res.send(all);
@@ -16,8 +18,8 @@ const addTopic = async (req, res) => {
     const body = req.body;
     const topicData = {name: body.name, number: body.number};
 
-    const conn = db.connect();
-    const ret = Topic.createTopic(topicData);
+    const conn = await db.connect();
+    const ret = await Topic.createTopic(topicData);
     conn.close();
 
     res.send(ret);
@@ -34,7 +36,7 @@ const deleteTopic = async (req, res) => {
 };
 
 module.exports = {
-    getAllTopics,
+    getTopics,
     addTopic,
     deleteTopic
 };

@@ -1,19 +1,7 @@
-const schemas = require('../db/schemas');
 const mongoose = require('mongoose');
 const db = require('../db/index');
 
-const topicModel = mongoose.model('topic', schemas['topic']);
-const subtopicModel = mongoose.model('subtopic', schemas['subtopic']);
-
-const removeProperty = (subtopic, property) => {
-
-    const {
-        [property]: _,
-        ...result
-    } = subtopic;
-
-    return result;
-};
+const Subtopic = mongoose.model('subtopic');
 
 const getSubtopics = async (req, res) => {
 
@@ -21,35 +9,19 @@ const getSubtopics = async (req, res) => {
 
     const topicName = (body["topic"] ? body["topic"] : "");
 
-    let all;
-
     const conn = await db.connect();
-
-    if (topicName !== "") {
-        all = await subtopicModel.find({topic: topicName});
-    } else {
-        all = await subtopicModel.find();
-    }
-
-    const tidied = all.map(subtopic => {
-        return subtopic;//removeProperty(subtopic, "__v");//removeProperty(, "_id");
-    });
-
-    console.log(tidied);
-
+    const subtopics = Subtopic.getSubtopics(topicName);
     conn.close();
 
-    res.send(all);
+    res.send(subtopics);
 };
 
 const addSubtopic = async (req, res) => {
     const body = req.body;
     const subtopicData = {...body};
 
-    const subtopic = new subtopicModel(subtopicData);
-
     const conn = await db.connect();
-    const ret = await subtopic.save();
+    const ret = await Subtopic.createSubtopic(subtopicData);
     conn.close();
 
     res.send(ret);
@@ -58,5 +30,4 @@ const addSubtopic = async (req, res) => {
 module.exports = {
     getSubtopics,
     addSubtopic,
-    subtopicModel
 };

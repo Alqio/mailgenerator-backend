@@ -39,3 +39,21 @@ const subtopic = new mongoose.Schema({
         required: true
     }
 });
+
+subtopic.statics.getSubtopics = async function(topicName) {
+    let all;
+    if (topicName && topicName !== "") {
+        all = await this.find({topic: topicName});
+    } else {
+        all = await this.find();
+    }
+    return all;
+};
+
+subtopic.statics.createSubtopic = async function(subtopicData) {
+    const subtopic = new this(subtopicData);
+    return await subtopic.save();
+};
+
+
+module.exports = mongoose.model('subtopic', subtopic);

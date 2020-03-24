@@ -2,9 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const db = require('./db/index');
+//require schemas once so schemas get initialised
+const schemas = require('./db/schemas');
+
 const topicRoutes = require('./routes/topicRoutes');
 const subtopicRoutes = require('./routes/subtopicRoutes');
+const mailRoutes = require('./routes/mailRoutes');
 
 
 const config = {

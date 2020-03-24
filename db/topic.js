@@ -11,7 +11,7 @@ const topic = new mongoose.Schema({
         required: [true, "Topic needs a number"]
     },
     mail: {
-        type: String,
+        type: String, //mail id
         required: [true, "Topic needs to belong to a mail"]
     }
 });
@@ -28,8 +28,12 @@ topic.statics.deleteTopic = async function(number) {
     return topics;
 };
 
-topic.statics.getAllTopics = async function() {
+topic.statics.getTopics = async function(mail, name) {
     return await this.find();
+};
+
+topic.statics.getSubtopics = async function(topicName) {
+
 };
 
 topic.statics.createTopic = async function(topicData) {
@@ -52,6 +56,7 @@ topic.statics.createTopic = async function(topicData) {
         }
     }
 
+    console.log(topicData);
     const topic = new this(topicData);
 
     return await topic.save();

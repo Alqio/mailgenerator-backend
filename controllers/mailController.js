@@ -1,40 +1,36 @@
-const schemas = require('../db/schemas');
 const mongoose = require('mongoose');
 const db = require('../db/index');
-const subtopicService = require('./subtopicService');
 
-const topicModel = mongoose.model('topic', schemas['topic']);
-const mailModel = mongoose.model('mail', schemas['mail']);
-
+const Mail = mongoose.model('mail');
 
 const getMails = async (req, res) => {
     const id = req.params.id;
 
-    let mails;
-
     const conn = await db.connect();
+    let mails;
     if (id) {
-        mails = await mailModel.find({id});
+        mails = Mail.getMail(id);
     } else {
-        mails = await mailModel.find();
+        mails = Mail.getAllMails();
     }
     conn.close();
 
     res.send(mails);
 };
 
-const addMail = async (req, res) => {
-
-    const mail = new mailModel(mailData);
+const createMail = async (req, res) => {
+    const mailData = {
+        name: req.body.name
+    };
 
     const conn = await db.connect();
-    const ret = await mail.save();
+    const ret = await Mail.createMail(mailData);
     conn.close();
 
-    return ret;
+    res.send(ret);
 };
 
 module.exports = {
     getMails,
-    addMail
+    createMail
 };
