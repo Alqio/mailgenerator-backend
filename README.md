@@ -4,7 +4,7 @@ This is the backend project of a mail generator project. It uses Express.js and 
 ## Setting up
 
 ### Development environment
-This project uses docker compose. So you can simply clone the project and then run `docker-compose up`, 
+This project uses docker compose. So you can simply clone the project, run `npm install` and then run `docker-compose up`, 
 which starts both the express server and database
 
 ### Production environment

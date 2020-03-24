@@ -2,10 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const db = require('./db/index');
-const topicRoutes = require('./routes/topicRoutes');
-const subtopicRoutes = require('./routes/subtopicRoutes');
+//require schemas once so schemas get initialised
+const schemas = require('./db/schemas');
 
+const router = require('./routes/router');
 
 const config = {
     name: 'mailgenerator-express',
@@ -18,8 +18,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/topic', topicRoutes);
-app.use('/subtopic', subtopicRoutes);
+app.use('/', router);
 
 
 app.get('/', (req, res) => {
