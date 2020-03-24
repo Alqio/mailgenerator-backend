@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const subtopic = require('./subtopic');
+const Subtopic = mongoose.model('subtopic');
+const Mail = mongoose.model('mail');
 
 const topic = new mongoose.Schema({
     name: {
@@ -16,41 +17,46 @@ const topic = new mongoose.Schema({
     }
 });
 
-topic.statics.deleteTopic = async function(number) {
-    const topics = await this.find({number: number});
+topic.statics.deleteTopic = async function(id) {
+    const topic = await this.findById(id);
 
-    for (let i = 0; i < topics.length; i++) {
-        await subtopic.deleteMany({topic: topics[i].name})
-    }
+    await Subtopic.deleteMany({topic: id});
 
-    await this.deleteMany({number: number});
+    await this.deleteOne({_id, id});
 
-    return topics;
+    return topic;
 };
 
-topic.statics.getTopics = async function(mail, name) {
+topic.statics.getTopic = async function(mail, topicId) {
+    return await this.find({mail, _id: topicId});
+};
+
+topic.statics.getAllTopics = async function() {
     return await this.find();
 };
 
-topic.statics.getSubtopics = async function(topicName) {
-
+topic.statics.getAllSubtopics = async function(topicId) {
+    const allSubtopics = await Subtopic.getAllTopics();
+    return allSubtopics.filter(subtopic => subtopic.topic === topicId);
 };
 
-topic.statics.createTopic = async function(topicData) {
+topic.statics.createTopic = async function(mail, topicData) {
     const number = Number(topicData.number);
     const name = topicData.name;
-    const topics = await this.getAllTopics();
+
+    //find all topics in this mail to see if there are duplicates
+    const topics = await Mail.getAllTopics(mail);
 
     for (let i = 0; i < topics.length; i++) {
         if (topics[i].number === number) {
             return {
-                error: "Number already exists",
+                error: "Number already exists in this mail",
                 code: 409
             };
         }
         if (topics[i].name === name) {
             return {
-                error: "Name already exists",
+                error: "Name already exists in this mail",
                 code: 409
             }
         }

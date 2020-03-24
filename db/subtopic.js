@@ -40,14 +40,13 @@ const subtopic = new mongoose.Schema({
     }
 });
 
-subtopic.statics.getSubtopics = async function(topicName) {
-    let all;
-    if (topicName && topicName !== "") {
-        all = await this.find({topic: topicName});
-    } else {
-        all = await this.find();
-    }
-    return all;
+subtopic.statics.getSubtopic = async function(topicId) {
+    return await this.find({topic: topicId});
+};
+
+
+subtopic.statics.getAllSubtopics = async function() {
+    return await this.find();
 };
 
 subtopic.statics.createSubtopic = async function(subtopicData) {

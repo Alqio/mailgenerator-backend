@@ -4,7 +4,7 @@ const db = require('../db/index');
 const Mail = mongoose.model('mail');
 
 const getMails = async (req, res) => {
-    const id = req.params.id;
+    const id = req.params.mailId;
 
     const conn = await db.connect();
     let mails;

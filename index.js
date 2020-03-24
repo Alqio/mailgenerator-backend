@@ -5,10 +5,7 @@ const cors = require('cors');
 //require schemas once so schemas get initialised
 const schemas = require('./db/schemas');
 
-const topicRoutes = require('./routes/topicRoutes');
-const subtopicRoutes = require('./routes/subtopicRoutes');
-const mailRoutes = require('./routes/mailRoutes');
-
+const router = require('./routes/router');
 
 const config = {
     name: 'mailgenerator-express',
@@ -21,8 +18,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/topic', topicRoutes);
-app.use('/subtopic', subtopicRoutes);
+app.use('/', router);
 
 
 app.get('/', (req, res) => {

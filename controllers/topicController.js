@@ -2,21 +2,34 @@ const mongoose = require('mongoose');
 const db = require('../db/index');
 
 const Topic = mongoose.model('topic');
+const Mail = mongoose.model('mail');
 
 const getTopics = async (req, res) => {
+    const topic = req.params.topicId;
+    const mail = req.params.mailId;
 
-    const name = req.body.name;
+    let topics;
 
     const conn = await db.connect();
-    const all = await Topic.getTopics(name);
+    if (!topic) {
+        topics = await Mail.getAllTopics(mail);
+    } else {
+        topics = await Topic.getTopic(mail, topic);
+    }
     conn.close();
 
-    res.send(all);
+    res.send(topics);
 };
 
 const addTopic = async (req, res) => {
     const body = req.body;
-    const topicData = {name: body.name, number: body.number};
+    const mail = req.params.mailId;
+
+    const topicData = {
+        name: body.name,
+        number: body.number,
+        mail
+    };
 
     const conn = await db.connect();
     const ret = await Topic.createTopic(topicData);
@@ -26,10 +39,10 @@ const addTopic = async (req, res) => {
 };
 
 const deleteTopic = async (req, res) => {
-    const number = req.params.number;
+    const number = req.params.topicId;
 
     const conn = await db.connect();
-    const topics = await Topic.deleteTopic(number);
+    const topics = await Topic.deleteTopic(topicId);
     conn.close();
 
     res.send(topics);
