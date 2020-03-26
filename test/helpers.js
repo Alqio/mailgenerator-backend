@@ -9,15 +9,12 @@ const db = require('../db/index');
 const clearDatabase = async () => {
     const conn = await db.connect();
     await mongoose.model('topic').deleteMany({}, function(err) {
-        //console.log('Topic collection removed')
     });
     await mongoose.model('mail').deleteMany({}, function(err) {
-        //console.log('Mail collection removed')
     });
     await mongoose.model('subtopic').deleteMany({}, function(err) {
-        //console.log(' Subtopiccollection removed')
     });
-    conn.close();
+    await conn.close();
 };
 
 const mockTopic = {

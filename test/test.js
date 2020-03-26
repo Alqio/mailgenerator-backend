@@ -10,23 +10,16 @@ const helpers = require('./helpers');
 chai.use(chaiHttp);
 chai.should();
 
+before(async () => {
+    return await helpers.clearDatabase();
+});
 
-describe("Mail", () => {
+describe("Creating a mail, adding topics and subtopics", () => {
 
-    before(async () => {
-        return await helpers.clearDatabase();
-    });
+    let mail;
+    let topic;
 
-    describe("Creating and getting mails should work", () => {
-        it("/GET should return empty list when there are no mails", async () => {
-
-            const res = await chai.request(app).get('/mail');
-
-            expect(res.status).to.equal(200);
-            res.body.should.be.a('array');
-            expect(res.body.length).to.equal(0);
-
-        });
+    describe("Creating a mail", () => {
         it("/POST should create a new mail", async () => {
             const mailData = {
                 ...helpers.mockMail
@@ -36,20 +29,46 @@ describe("Mail", () => {
             expect(res.status).to.equal(200);
             res.should.have.status(200);
             res.body.should.be.a('object');
+            mail = res.body;
         });
+
         it("/GET should get newly created mail", async () => {
 
-            const res = await chai.request(app).get('/mail');
+            const res = await chai.request(app).get('/mail/' + mail._id);
 
             expect(res.status).to.equal(200);
-            res.should.have.status(200);
-            res.body.should.be.a('array');
-            expect(res.body.length).to.equal(1);
+            res.body.should.be.a('object');
+            expect(res.body.name).to.equal(helpers.mockMail.name);
 
         });
     });
 
-    after(async () => {
-        return await helpers.clearDatabase();
-    })
+    describe("Creating a topic", () => {
+        it("/POST should create a new topic", async () => {
+            const topicData = {
+                ...helpers.mockTopic
+            };
+
+            const res = await chai.request(app).post('/mail/' + mail._id + "/topic/").send(topicData);
+            expect(res.status).to.equal(200);
+            res.body.should.be.a('object');
+            expect(res.body.name).to.equal(helpers.mockTopic.name);
+            expect(res.body.number).to.equal(helpers.mockTopic.number);
+            expect(res.body.mail).to.equal(mail._id);
+            topic = res.body;
+
+        });
+        it("/GET should return the newly created topic", async () => {
+            const res = await chai.request(app).get('/mail/' + mail._id + "/topic/" + topic._id);
+            expect(res.status).to.equal(200);
+            res.body.should.be.a('object');
+            expect(res.body.name).to.equal(helpers.mockTopic.name);
+            expect(res.body.number).to.equal(helpers.mockTopic.number);
+            expect(res.body.mail).to.equal(mail._id);
+        });
+    });
+});
+
+after(async () => {
+    return await helpers.clearDatabase();
 });

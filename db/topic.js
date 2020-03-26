@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
 
-const Subtopic = require('./subtopic');
-const Mail = require('./mail');
-
 //const Subtopic = mongoose.model('subtopic');
 //const Mail = mongoose.model('mail');
 
@@ -32,7 +29,7 @@ topic.statics.deleteTopic = async function(id) {
 };
 
 topic.statics.getTopic = async function(mail, topicId) {
-    return await this.find({mail, _id: topicId});
+    return await this.findOne({mail, _id: topicId});
 };
 
 topic.statics.getAllTopics = async function() {
@@ -40,7 +37,7 @@ topic.statics.getAllTopics = async function() {
 };
 
 topic.statics.getAllSubtopics = async function(topicId) {
-    const allSubtopics = await Subtopic.getAllTopics();
+    const allSubtopics = await Subtopic.getAllSubtopics();
     return allSubtopics.filter(subtopic => subtopic.topic === topicId);
 };
 
@@ -49,7 +46,7 @@ topic.statics.createTopic = async function(mail, topicData) {
     const name = topicData.name;
 
     //find all topics in this mail to see if there are duplicates
-    const topics = await Mail.getAllTopics(mail);
+    const topics = await Mail.getAllTopicsInMail(mail);
 
     for (let i = 0; i < topics.length; i++) {
         if (topics[i].number === number) {
@@ -66,12 +63,13 @@ topic.statics.createTopic = async function(mail, topicData) {
         }
     }
 
-    console.log(topicData);
     const topic = new this(topicData);
-
     return await topic.save();
 
 };
 
 
 module.exports = mongoose.model('topic', topic);
+
+const Subtopic = require('./subtopic');
+const Mail = require('./mail');

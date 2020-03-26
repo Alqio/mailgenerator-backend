@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Topic = require('./topic');
+
 
 const mail = new mongoose.Schema({
     name: {
@@ -27,9 +27,11 @@ mail.statics.createMail = async function(mailData) {
     return await mail.save();
 };
 
-mail.statics.getAllTopics = async function(mailId) {
+mail.statics.getAllTopicsInMail = async function(mailId) {
     const allTopics = await Topic.getAllTopics();
     return allTopics.filter(topic => topic.mail === mailId);
 };
 
 module.exports = mongoose.model('mail', mail);
+
+const Topic = require('./topic');
