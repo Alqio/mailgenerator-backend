@@ -16,6 +16,8 @@ router.get(   '/mail/:mailId/topic/:topicId', topicController.getTopic);
 router.delete('/mail/:mailId/topic/:topicId', topicController.deleteTopic);
 
 router.post(  '/mail/:mailId/topic/:topicId/subtopic/', subtopicController.addSubtopic);
-router.get(   '/mail/:mailId/topic/:topicId/subtopic/:subtopicId?', subtopicController.getSubtopics);
+router.get(   '/mail/:mailId/topic/:topicId/subtopic/', subtopicController.getSubtopics);
+router.get(   '/mail/:mailId/topic/:topicId/subtopic/:subtopicId', subtopicController.getSubtopic);
+
 
 module.exports = router;

@@ -16,8 +16,7 @@ before(async () => {
 
 describe("Creating a mail, adding topics and subtopics", () => {
 
-    let mail;
-    let topic;
+    let mail, topic, subtopic;
 
     describe("Creating a mail", () => {
         it("/POST should create a new mail", async () => {
@@ -67,6 +66,34 @@ describe("Creating a mail, adding topics and subtopics", () => {
             expect(res.body.mail).to.equal(mail._id);
         });
     });
+
+    describe("Creating a subtopic", () => {
+        it("/POST should create a new subtopic", async () => {
+            const subtopicData = {
+                ...helpers.mockSubtopic,
+                topic: topic._id
+            };
+
+            const res = await chai.request(app).post('/mail/' + mail._id + "/topic/" + topic._id + "/subtopic").send(subtopicData);
+            expect(res.status).to.equal(200);
+            res.body.should.be.a('object');
+            expect(res.body.name).to.equal(helpers.mockSubtopic.name);
+            expect(res.body.registration).to.equal(helpers.mockSubtopic.registration);
+            expect(res.body.topic).to.equal(topic._id);
+
+            subtopic = res.body;
+
+        });
+        it("/GET should return the newly created subtopic", async () => {
+            const res = await chai.request(app).get('/mail/' + mail._id + "/topic/" + topic._id + "/subtopic/" + subtopic._id);
+            expect(res.status).to.equal(200);
+            res.body.should.be.a('object');
+            expect(res.body.name).to.equal(helpers.mockSubtopic.name);
+            expect(res.body.registration).to.equal(helpers.mockSubtopic.registration);
+            expect(res.body.topic).to.equal(topic._id);
+        });
+    });
+
 });
 
 after(async () => {
