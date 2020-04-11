@@ -12,4 +12,5 @@ This project currently has not been set up to any production environment, but it
 Setting environment variables and correct database urls should be sufficient for set up.
 
 ## Tests
-This project currently has no tests and no CI.
+Tests use Mocha test framework and Chai for assertion. Run tests:
+`docker-compose -f docker-compose.test.yml up --abort-on-container-exit`

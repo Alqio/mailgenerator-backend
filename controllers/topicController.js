@@ -5,20 +5,25 @@ const Topic = mongoose.model('topic');
 const Mail = mongoose.model('mail');
 
 const getTopics = async (req, res) => {
-    const topic = req.params.topicId;
     const mail = req.params.mailId;
 
-    let topics;
-
     const conn = await db.connect();
-    if (!topic) {
-        topics = await Mail.getAllTopics(mail);
-    } else {
-        topics = await Topic.getTopic(mail, topic);
-    }
+    const topics = await Mail.getAllTopicsInMail(mail);
     conn.close();
 
     res.send(topics);
+};
+
+const getTopic = async (req, res) => {
+    const topicId = req.params.topicId;
+    const mailId = req.params.mailId;
+
+    const conn = await db.connect();
+    const topic = await Topic.getTopic(mailId, topicId);
+    conn.close();
+
+    res.send(topic);
+
 };
 
 const addTopic = async (req, res) => {
@@ -30,16 +35,15 @@ const addTopic = async (req, res) => {
         number: body.number,
         mail
     };
-
     const conn = await db.connect();
-    const ret = await Topic.createTopic(topicData);
+    const ret = await Topic.createTopic(mail, topicData);
     conn.close();
 
     res.send(ret);
 };
 
 const deleteTopic = async (req, res) => {
-    const number = req.params.topicId;
+    const topicId = req.params.topicId;
 
     const conn = await db.connect();
     const topics = await Topic.deleteTopic(topicId);
@@ -51,5 +55,6 @@ const deleteTopic = async (req, res) => {
 module.exports = {
     getTopics,
     addTopic,
-    deleteTopic
+    deleteTopic,
+    getTopic
 };

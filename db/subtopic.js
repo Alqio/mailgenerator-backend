@@ -40,8 +40,8 @@ const subtopic = new mongoose.Schema({
     }
 });
 
-subtopic.statics.getSubtopic = async function(topicId) {
-    return await this.find({topic: topicId});
+subtopic.statics.getSubtopic = async function(id) {
+    return await this.findById(id);
 };
 
 

@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 //require schemas once so schemas get initialised
+const db = require('./db/index');
 const schemas = require('./db/schemas');
 
 const router = require('./routes/router');
@@ -31,3 +32,5 @@ app.listen(config.port, config.host, (e)=> {
     }
     console.log(`${config.name} running on ${config.host}:${config.port}`);
 });
+
+module.exports = app;
